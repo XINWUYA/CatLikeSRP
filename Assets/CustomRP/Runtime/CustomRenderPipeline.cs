@@ -3,23 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class CustomRenderPipeline : RenderPipeline
+namespace CustomRP
 {
-    CameraRenderer m_cameraRenderer = new CameraRenderer();
-
-    protected override void Render(ScriptableRenderContext context, Camera[] cameras)
+    public class CustomRenderPipeline : RenderPipeline
     {
-        for (int i = 0; i < cameras.Length; ++i)
+        CameraRenderer m_cameraRenderer = new CameraRenderer();
+
+        protected override void Render(ScriptableRenderContext context, Camera[] cameras)
         {
-            m_cameraRenderer.Render(context, cameras[i]);
+            for (int i = 0; i < cameras.Length; ++i)
+            {
+                m_cameraRenderer.Render(context, cameras[i]);
+            }
         }
-    }
 
-    protected override void Render(ScriptableRenderContext context, List<Camera> cameras)
-    {
-        for (int i = 0; i < cameras.Count; ++i)
+        protected override void Render(ScriptableRenderContext context, List<Camera> cameras)
         {
-            m_cameraRenderer.Render(context, cameras[i]);
+            for (int i = 0; i < cameras.Count; ++i)
+            {
+                m_cameraRenderer.Render(context, cameras[i]);
+            }
         }
     }
 }

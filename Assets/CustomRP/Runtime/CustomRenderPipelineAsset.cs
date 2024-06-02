@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-[CreateAssetMenu(menuName = "Rendering/CatLikeRenderPipeline")]
-public class CustomRenderPipelineAsset : RenderPipelineAsset
+namespace CustomRP
 {
-    protected override RenderPipeline CreatePipeline()
+    [CreateAssetMenu(menuName = "Rendering/CatLikeRenderPipeline")]
+    public class CustomRenderPipelineAsset : RenderPipelineAsset
     {
-        return new CustomRenderPipeline();
+        protected override RenderPipeline CreatePipeline()
+        {
+            return new CustomRenderPipeline();
+        }
     }
 }
