@@ -24,6 +24,7 @@ namespace CustomRP
             m_camera = camera;
 
 #if UNITY_EDITOR
+            PrepareForCamera();
             PrepareForSceneView();
 #endif
 
@@ -42,8 +43,15 @@ namespace CustomRP
         private void Setup()
         {
             m_context.SetupCameraProperties(m_camera);
-            m_commandBuffer.ClearRenderTarget(true, true, Color.clear);
-            m_commandBuffer.BeginSample(c_commandBufferName);
+            
+            // Clear Camera RenderTarget
+            CameraClearFlags flag = m_camera.clearFlags;
+            m_commandBuffer.ClearRenderTarget(
+                flag <= CameraClearFlags.Depth, 
+                flag <= CameraClearFlags.Color, 
+                flag <= CameraClearFlags.Color ? m_camera.backgroundColor.linear : Color.clear);
+            
+            m_commandBuffer.BeginSample(SampleName);
             ExecuteCommandBuffer();
         }
 
@@ -80,7 +88,7 @@ namespace CustomRP
         /// </summary>
         private void Submit()
         {
-            m_commandBuffer.EndSample(c_commandBufferName);
+            m_commandBuffer.EndSample(SampleName);
             ExecuteCommandBuffer();
 
             m_context.Submit();

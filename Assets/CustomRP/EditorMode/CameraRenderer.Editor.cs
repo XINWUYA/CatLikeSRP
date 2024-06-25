@@ -6,6 +6,7 @@ using UnityEngine.Rendering;
 
 #if UNITY_EDITOR
 using UnityEditor;
+using UnityEngine.Profiling;
 #endif
 
 namespace CustomRP
@@ -25,6 +26,8 @@ namespace CustomRP
 
         private static Material s_errorMaterial;
         private const String c_gizmoSampleName = "Draw Gizmos";
+        
+        private string SampleName { get; set; }
 
         /// <summary>
         /// 编辑器模式下，使用ErrorShader绘制那些暂未支持材质的物体
@@ -63,6 +66,13 @@ namespace CustomRP
             }
         }
 
+        private void PrepareForCamera()
+        {
+            Profiler.BeginSample("EditorOnly");
+            m_commandBuffer.name = SampleName = m_camera.name;
+            Profiler.EndSample();
+        }
+
         private void PrepareForSceneView()
         {
             if (m_camera.cameraType == CameraType.SceneView)
@@ -70,7 +80,8 @@ namespace CustomRP
                 ScriptableRenderContext.EmitWorldGeometryForSceneView(m_camera);
             }
         }
-
+#else
+        private const string SampleName = c_commandBufferName;
 #endif
     }
 }
